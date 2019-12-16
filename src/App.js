@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Movies from './components/movies';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Meu primeiro app em React
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Aprenda mais em
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  state = {
+    movies: []
+  }
+  componentDidMount(){
+    fetch('https://api.themoviedb.org/3/movie/upcoming?api_key=10ac6b308154d8d3da2368d25caa4778&language=pt-BR')
+    .then(res => res.json())
+    .then((data) => {
+      var movieList = data.results;
+      console.log(movieList)
+      this.setState({movies: movieList})
+      console.log(data)
+    })
+    .catch(console.log)
+  }
+
+  render() {
+    return (
+      <Movies movies={this.state.movies}/>
+    );
+  }
 }
 
 export default App;
